@@ -1,19 +1,19 @@
 import os
 import zipfile
 
-first = "flag_A1.zip"
-password = first[:-4]
-with zipfile.ZipFile(first) as z:
+current_zip = "flag_A1.zip"
+password = current_zip[:-4]
+with zipfile.ZipFile(current_zip) as z:
     z.extractall()
-    nextzip = z.namelist()[0]
+    next_zip = z.namelist()[0]
 
-while nextzip.endswith(".zip"):
+while next_zip.endswith(".zip"):
     password = password.encode("utf-8")
-    print(f"zip={nextzip}, password={password}")
-    with zipfile.ZipFile(nextzip) as z2:
+    print(f"zip={next_zip}, password={password}")
+    with zipfile.ZipFile(next_zip) as z2:
         z2.setpassword(password)
         z2.extractall(pwd=password)
-        password = nextzip[:-4]
-        zip_to_delete = nextzip
-        nextzip = z2.namelist()[0]
+        password = next_zip[:-4]
+        zip_to_delete = next_zip
+        next_zip = z2.namelist()[0]
     os.remove(zip_to_delete)
